@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "94599777044",
+    "project_id": "babbage-pb-19",
+    "storage_bucket": "babbage-pb-19.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:94599777044:android:40864e599959f7c4609001",
+        "android_client_info": {
+          "package_name": "com.example.babbage_pb_19"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "94599777044-8pdma1l1sgiu39jjme1pdp63htgc1l0i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDT87z_RIWhYTl7f80iaYjDXVtw7S-vDHg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "94599777044-8pdma1l1sgiu39jjme1pdp63htgc1l0i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- discussion_activity.xml -->
+<!-- Layout for the discussion activity or fragment -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- RecyclerView or ListView to display comments -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/comments_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp" />
+
+    <!-- Comment input section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <!-- Comment input field -->
+        <EditText
+            android:id="@+id/comment_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Add a comment"
+            android:maxLines="5"
+            android:textColor="@color/almost_black"
+            android:inputType="textMultiLine" />
+
+        <!-- Submit button -->
+        <ImageButton
+            android:id="@+id/submit_button"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@color/dark_teal"
+            android:src="@drawable/ic_send_white"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
+
