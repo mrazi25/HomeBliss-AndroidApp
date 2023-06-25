@@ -59,8 +59,8 @@ class ProfileFragment : Fragment() {
                     _binding.etEmail.text = "Email: "+it.child("email").value.toString()
                     Picasso.get()
                         .load(it.child("image").value.toString())
-                        .placeholder(com.example.babbage_pb_19.R.drawable.profile)
-                        .error(com.example.babbage_pb_19.R.drawable.profile)
+                        .placeholder(com.example.babbage_pb_19.R.drawable.homebliss)
+                        .error(com.example.babbage_pb_19.R.drawable.homebliss)
                         .into(_binding.ivProfile)
 
                 }

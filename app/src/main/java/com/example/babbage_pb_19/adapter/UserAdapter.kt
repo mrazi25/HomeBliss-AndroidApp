@@ -25,7 +25,7 @@ class UserAdapter (private var mContext:Context,
         val user = mUser[position]
         holder.nameTV.text = user.name.toString()
         holder.emailTV.text = user.email.toString()
-        Picasso.get().load(user.image.toString()).placeholder(R.drawable.profile).into(holder.imageCIV)
+        Picasso.get().load(user.image.toString()).placeholder(R.drawable.homebliss).into(holder.imageCIV)
     }
 
     override fun getItemCount(): Int {

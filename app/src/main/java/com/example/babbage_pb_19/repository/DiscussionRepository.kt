@@ -34,7 +34,7 @@ class DiscussionRepository {
                             val discussion = commentSnapshot.child("discussion").getValue(String::class.java)
                             val img = commentSnapshot.child("img").getValue(String::class.java)
                             if (commenter != null && discussion != null && img != null) {
-                                val discussionObj = Discussion(commenter, discussion, img)
+                                val discussionObj = Discussion(discussion, commenter, img)
                                 discussions.add(discussionObj)
                             }
                         }

@@ -43,7 +43,7 @@ class DiscussionAdapter() : RecyclerView.Adapter<DiscussionAdapter.MyViewHolder>
                 holder.commenter.text = it.child("name").value.toString()
             }
         }
-        Picasso.get().load(currentitem.img).placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile_pict)
+        Picasso.get().load(currentitem.img).placeholder(R.drawable.homebliss).error(R.drawable.homebliss).into(holder.profile_pict)
 
     }
 

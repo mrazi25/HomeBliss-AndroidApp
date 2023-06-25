@@ -48,7 +48,7 @@
         android:layout_below="@+id/app_bar_layout_profile"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:src="@drawable/profile"/>
+        android:src="@drawable/ic_person_teal_outline"/>
     
     <TextView
         android:id="@+id/change_image_btn"

@@ -146,8 +146,8 @@ class PostAdapter : RecyclerView.Adapter<PostAdapter.MyViewHolder>() {
                     //Meletakan Photo Profile
                     Picasso.get()
                         .load(it.child("image").value.toString())
-                        .placeholder(R.drawable.profile)
-                        .error(R.drawable.profile)
+                        .placeholder(R.drawable.homebliss)
+                        .error(R.drawable.homebliss)
                         .into(holder.profileImage)
                 }
             }

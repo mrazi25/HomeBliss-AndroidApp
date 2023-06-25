@@ -82,11 +82,23 @@ class LikeAdapter() : RecyclerView.Adapter<LikeAdapter.MyViewHolder>() {
         //Meletakan Photo Profile
         if(mylikes.contains(currentitem.postid)) {
             holder.cardHolder.visibility = View.VISIBLE
-            Picasso.get()
-                .load(currentitem.poster_img)
-                .placeholder(com.example.babbage_pb_19.R.drawable.profile)
-                .error(com.example.babbage_pb_19.R.drawable.profile)
-                .into(holder.profileImage)
+            val userRef = FirebaseDatabase.getInstance().reference.child("Users")
+            val user = FirebaseAuth.getInstance().currentUser
+            if (user != null) {
+                // User is signed in
+                userRef.child(currentitem.poster_uid.toString()).get().addOnSuccessListener {
+                    if (it.exists()) {
+                        //Meletakan Photo Profile
+                        Picasso.get()
+                            .load(it.child("image").value.toString())
+                            .placeholder(R.drawable.homebliss)
+                            .error(R.drawable.homebliss)
+                            .into(holder.profileImage)
+                    }
+                }
+            } else {
+                // No user is signed in
+            }
 
             //Meletakan Postingan
             Picasso.get()

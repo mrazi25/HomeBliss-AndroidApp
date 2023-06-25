@@ -119,8 +119,8 @@ class ProfileSettingActivity : AppCompatActivity() {
                     emailTextView.setText(it.child("email").value.toString())
                     Picasso.get()
                         .load(it.child("image").value.toString())
-                        .placeholder(R.drawable.profile)
-                        .error(R.drawable.profile)
+                        .placeholder(R.drawable.homebliss)
+                        .error(R.drawable.homebliss)
                         .into(pictureCIV)
 
                 }
