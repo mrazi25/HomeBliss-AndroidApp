@@ -23,10 +23,6 @@ class ProfileFragment : Fragment() {
     private lateinit var _binding: FragmentProfileBinding
     private val binding get() = _binding!!
 
-    private var recyclerView: RecyclerView? = null
-    private var userAdapter: UserAdapter? = null
-    private var mUser: MutableList<User>? = null
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

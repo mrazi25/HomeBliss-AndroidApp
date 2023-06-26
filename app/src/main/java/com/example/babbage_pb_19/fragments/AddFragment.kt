@@ -16,11 +16,6 @@ class AddFragment : Fragment() {
 
     private lateinit var _binding: FragmentAddBinding
     private val binding get() = _binding!!
-
-    private var storageRef = Firebase.storage
-    private lateinit var firebaseUser: FirebaseUser
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

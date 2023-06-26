@@ -47,7 +47,7 @@ class RegistActivity : AppCompatActivity() {
     private fun saveUserInfo(name: String, email: String) {
         val currentUserID = FirebaseAuth.getInstance().currentUser!!.uid
         val userRefs: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Users")
-        val img = "https://firebasestorage.googleapis.com/v0/b/babbage-pb-19.appspot.com/o/Default%20Profile%20Pict%2Fdefaultpropict.png?alt=media&token=582130e9-6769-4fe7-842c-938d23c803d1"
+        val img = "https://firebasestorage.googleapis.com/v0/b/babbage-pb-19.appspot.com/o/Default%20Profile%20Pict%2Fpropict.jpeg?alt=media&token=d789a115-776b-4b26-a164-f3f197b1e9f2"
         val user = User(name, email, img)
 
         userRefs.child(currentUserID).setValue(user)

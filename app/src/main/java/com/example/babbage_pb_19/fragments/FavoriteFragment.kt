@@ -34,9 +34,6 @@ private const val ARG_PARAM2 = "param2"
 
 class FavoriteFragment : Fragment() {
 
-    private val myLikes: ArrayList<String> = ArrayList()
-    private val postList: ArrayList<Post> = ArrayList()
-
     private lateinit var viewModel : PostViewModel
     private lateinit var postRecyclerView: RecyclerView
     lateinit var adapter: LikeAdapter
@@ -82,7 +79,6 @@ class FavoriteFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 

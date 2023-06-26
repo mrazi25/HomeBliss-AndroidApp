@@ -33,7 +33,6 @@ class HomeFragment : Fragment() {
     private lateinit var viewModel : PostViewModel
     private lateinit var postRecyclerView: RecyclerView
     lateinit var adapter: PostAdapter
-    lateinit var postList: List<Post>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,8 +55,6 @@ class HomeFragment : Fragment() {
         })
 
     }
-
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
