@@ -52,13 +52,9 @@ class DiscussionActivity : AppCompatActivity() {
         viewModel.allDiscussion.observe(this) { discussions ->
             adapter1.updateDiscussionList(discussions)
         }
-
-
-
-
         findViewById<ImageButton>(R.id.submit_button).setOnClickListener {
             if (findViewById<EditText>(R.id.comment_input).text.equals("")){
-                Toast.makeText(this, "Say something in discussion. Don't send nothing!", Toast.LENGTH_SHORT)
+                Toast.makeText(this, "Say something in discussion.", Toast.LENGTH_SHORT)
                     .show()
             } else {
                 addDiscussion()
@@ -72,18 +68,15 @@ class DiscussionActivity : AppCompatActivity() {
         var dbRef = FirebaseDatabase.getInstance().reference.child("Discussion").child(post.postid.toString())
         val userRef = FirebaseDatabase.getInstance().reference.child("Users")
         val user = FirebaseAuth.getInstance().currentUser
-        var img =""
         if (user != null) {
             // User is signed in
-            userRef.child(user.uid).get().addOnSuccessListener {
+            userRef.child(user.uid).get().addOnSuccessListener { it ->
                 if (it.exists()) {
                     var discussion = Discussion(findViewById<EditText>(R.id.comment_input).text.toString(),
                         user?.uid, it.child("image").value.toString())
-
                     dbRef.push().setValue(discussion)
                         .addOnSuccessListener {
-                            Toast.makeText(this, "Success", Toast.LENGTH_SHORT)
-                                .show()
+                            println("Adding new discussion is success")
                             findViewById<EditText>(R.id.comment_input).setText("")
                         }
                         .addOnFailureListener {
@@ -92,30 +85,9 @@ class DiscussionActivity : AppCompatActivity() {
                 }
             }
         } else {
-            // No user is signed in
+            Toast.makeText(this, "Error Occurred", Toast.LENGTH_SHORT)
+                .show()
+            println("There is no user that currently logging in")
         }
     }
-
-    fun readDiscussion() {
-        var dbRef = FirebaseDatabase.getInstance().getReference("Discussion").child(post.postid.toString())
-
-        dbRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                listDiscussion.clear()
-                for (snapshot in snapshot.getChildren()) {
-                    val discussion = snapshot.getValue(Discussion::class.java)
-                    if (discussion != null) {
-                        listDiscussion.add(discussion)
-                    }
-                }
-                adapter1.notifyDataSetChanged()
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                println(error.message)
-            }
-
-        })
-    }
-
 }

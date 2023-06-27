@@ -23,7 +23,6 @@ class DiscussionRepository {
 
 
     fun loadDiscussions(postid: String, discussionList: MutableLiveData<List<Discussion>>) {
-        println(postid)
         dbDiscussionReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 try {

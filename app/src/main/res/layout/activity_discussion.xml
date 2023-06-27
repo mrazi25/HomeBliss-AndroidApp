@@ -7,7 +7,46 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- RecyclerView or ListView to display comments -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/app_bar_layout_add">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/add_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/dark_teal">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/close_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="15dp"
+                    android:text="Close"
+                    android:layout_alignParentStart="true"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    android:textAlignment="center">
+
+                </TextView>
+                <TextView
+                    android:id="@+id/save_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_alignParentEnd="true"
+                    android:text="Post"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    android:textAlignment="center">
+
+                </TextView>
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/comments_recycler_view"
         android:layout_width="match_parent"
@@ -15,7 +54,6 @@
         android:layout_weight="1"
         android:padding="8dp" />
 
-    <!-- Comment input section -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,7 +61,6 @@
         android:orientation="horizontal"
         android:padding="8dp">
 
-        <!-- Comment input field -->
         <EditText
             android:id="@+id/comment_input"
             android:layout_width="0dp"

@@ -23,25 +23,14 @@ class PostRepository {
     fun loadUsers(postList : MutableLiveData<List<Post>>){
         dbPostReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-
                 try {
-
                     val _postList : List<Post> = snapshot.children.map { dataSnapshot ->
-
                         dataSnapshot.getValue(Post::class.java)!!
-
                     }
-
-                    println("Test Post Rep")
-                    println(_postList)
                     postList.postValue(_postList)
-
                 }catch (e : Exception){
                     e.printStackTrace()
-
                 }
-
-
             }
 
             override fun onCancelled(error: DatabaseError) {

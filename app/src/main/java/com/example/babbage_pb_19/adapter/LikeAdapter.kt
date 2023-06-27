@@ -1,6 +1,7 @@
 package com.example.babbage_pb_19.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.babbage_pb_19.R
+import com.example.babbage_pb_19.activity.DiscussionActivity
 import com.example.babbage_pb_19.data.Post
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -21,6 +23,7 @@ class LikeAdapter() : RecyclerView.Adapter<LikeAdapter.MyViewHolder>() {
     private val postList = ArrayList<Post>()
     private val mylikes : MutableList<String> = mutableListOf()
     private var firebaseUser = FirebaseAuth.getInstance().currentUser
+    private lateinit var parent: ViewGroup
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -28,6 +31,7 @@ class LikeAdapter() : RecyclerView.Adapter<LikeAdapter.MyViewHolder>() {
             R.layout.post_item,
             parent,false
         )
+        this.parent = parent
         return MyViewHolder(itemView)
 
     }
@@ -49,12 +53,10 @@ class LikeAdapter() : RecyclerView.Adapter<LikeAdapter.MyViewHolder>() {
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                // Jika terjadi error saat membaca database
                 println("Error: ${databaseError.message}")
             }
         })
     }
-
     open fun myLikes() {
         var firebaseUser = FirebaseAuth.getInstance().currentUser
         var databaseReference = FirebaseDatabase.getInstance().reference.child("Likes").child(firebaseUser!!.uid)
@@ -129,7 +131,12 @@ class LikeAdapter() : RecyclerView.Adapter<LikeAdapter.MyViewHolder>() {
             holder.cardHolder.visibility = View.GONE
             holder.cardHolder.layoutParams = RecyclerView.LayoutParams(0, 0)
         }
-
+        holder.discussionBtn.setOnClickListener {
+            var postToDiscuss=currentitem
+            val intent = Intent(parent.context, DiscussionActivity::class.java)
+            intent.putExtra("postToDiscuss", currentitem)
+            parent.context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {

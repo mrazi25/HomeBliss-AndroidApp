@@ -1,17 +1,15 @@
 package com.example.babbage_pb_19.activity
 
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.Manifest
-import android.content.ActivityNotFoundException
+import android.app.Activity
+import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.os.PersistableBundle
 import android.provider.MediaStore
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -24,12 +22,12 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
-import java.io.File
+import java.io.*
+import java.util.*
 
 class ProfileSettingActivity : AppCompatActivity() {
 
-    private lateinit var file: File
-    private lateinit var uri : Uri
+    private var uri_profile_pict: Uri? = null
     private lateinit var camIntent:Intent
     private lateinit var galIntent:Intent
     private lateinit var cropIntent:Intent
@@ -67,37 +65,37 @@ class ProfileSettingActivity : AppCompatActivity() {
         val savebtn = findViewById<ImageView>(R.id.save_btn)
         savebtn.setOnClickListener {
 
-        val name = nameTextView.text.toString()
-        val email = emailTextView.text.toString()
+            val name = nameTextView.text.toString()
+            val email = emailTextView.text.toString()
 
 
-        storageRef.getReference("images").child(System.currentTimeMillis().toString())
-            .putFile(uri)
-            .addOnSuccessListener{ task ->
-                task.metadata!!.reference!!.downloadUrl
-                    .addOnSuccessListener {
-                        val userId = FirebaseAuth.getInstance().currentUser!!.uid
-                        val mapImage = mapOf(
-                            "image" to it.toString(),
-                            "name" to name,
-                            "email" to email
-                        )
+            storageRef.getReference("images").child(System.currentTimeMillis().toString())
+                .putFile(uri_profile_pict!!)
+                .addOnSuccessListener{ task ->
+                    task.metadata!!.reference!!.downloadUrl
+                        .addOnSuccessListener {
+                            val userId = FirebaseAuth.getInstance().currentUser!!.uid
+                            val mapImage = mapOf(
+                                "image" to it.toString(),
+                                "name" to name,
+                                "email" to email
+                            )
 
-                        val databaseReference = FirebaseDatabase.getInstance().getReference("Users")
-                        databaseReference.child(userId).updateChildren(mapImage)
-                            .addOnSuccessListener {
-                                Toast.makeText(this, "Successful", Toast.LENGTH_SHORT).show()
-                                startActivity(
-                                    Intent(
-                                        this@ProfileSettingActivity,
-                                        MainActivity::class.java
+                            val databaseReference = FirebaseDatabase.getInstance().getReference("Users")
+                            databaseReference.child(userId).updateChildren(mapImage)
+                                .addOnSuccessListener {
+                                    Toast.makeText(this, "Successful", Toast.LENGTH_SHORT).show()
+                                    startActivity(
+                                        Intent(
+                                            this@ProfileSettingActivity,
+                                            MainActivity::class.java
+                                        )
                                     )
-                                )
-                            }
-                            .addOnFailureListener {error ->
-                                Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
-                            }
-                    }
+                                }
+                                .addOnFailureListener {error ->
+                                    Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+                                }
+                        }
 
                 }
         }
@@ -134,23 +132,26 @@ class ProfileSettingActivity : AppCompatActivity() {
         val openDialog = AlertDialog.Builder(this@ProfileSettingActivity)
         openDialog.setIcon(R.drawable.ic_image_teal)
         openDialog.setTitle("Choose your Image from")
-        openDialog.setNegativeButton("Camera"){
-                dialog,_->
+        openDialog.setNegativeButton("Camera") { dialog, _ ->
+            openCamera()
+            dialog.dismiss()
+        }
+        openDialog.setPositiveButton("Gallery") { dialog, _ ->
             openGallery()
             dialog.dismiss()
         }
-        openDialog.setNegativeButton("Gallery"){
-                dialog,_->
-            openGallery()
-            dialog.dismiss()
-        }
-        openDialog.setNeutralButton("Cancel"){
-                dialog,_->
+        openDialog.setNeutralButton("Cancel") { dialog, _ ->
             dialog.dismiss()
         }
         openDialog.create()
         openDialog.show()
+    }
 
+    private fun openCamera() {
+        camIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (camIntent.resolveActivity(packageManager) != null) {
+            startActivityForResult(camIntent, 0)
+        }
     }
 
     private fun openGallery() {
@@ -180,7 +181,7 @@ class ProfileSettingActivity : AppCompatActivity() {
         /**set crop image*/
         try {
             cropIntent = Intent("com.android.camera.action.CROP")
-            cropIntent.setDataAndType(uri,"image/*")
+            cropIntent.setDataAndType(uri_profile_pict,"image/*")
             cropIntent.putExtra("crop",true)
             cropIntent.putExtra("outputX",180)
             cropIntent.putExtra("outputY",180)
@@ -197,35 +198,68 @@ class ProfileSettingActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 0 && resultCode == RESULT_OK){
-            cropImages()
-        } else if (requestCode == 2){
-            if (data != null){
-                uri = data.data!!
+        if (requestCode == 0 && resultCode == RESULT_OK) {
+            // Gambar yang diambil dari kamera tersedia di 'data'
+            val imageBitmap = data?.getParcelableExtra<Bitmap>("data")
+            if (imageBitmap != null) {
+                // Lakukan pemangkasan (crop) atau operasi lain yang diperlukan pada gambar
+                uri_profile_pict = bitmapToUri(this, imageBitmap)
                 cropImages()
+                profileIMG.setImageURI(uri_profile_pict)
             }
-        }
-        else if (requestCode == 1){
-            if (data != null){
+        } else if (requestCode == 2) {
+            if (resultCode == RESULT_OK && data != null) {
+                uri_profile_pict = data.data!!
+                cropImages()
+                profileIMG.setImageURI(uri_profile_pict)
+            }
+        } else if (requestCode == 1) {
+            if (resultCode == RESULT_OK && data != null) {
                 val bundle = data.extras
-                val bitmap = bundle!!.getParcelable<Bitmap>("data")
-                profileIMG.setImageBitmap(bitmap)
+                val bitmap = bundle?.getParcelable<Bitmap>("data")
+                if (bitmap != null) {
+                    uri_profile_pict = bitmapToUri(this, bitmap)
+                    profileIMG.setImageURI(uri_profile_pict)
+                }
             }
         }
     }
+    fun bitmapToUri(context: Context, bitmap: Bitmap): Uri? {
+        val contentResolver: ContentResolver = context.contentResolver
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, "image.jpg")
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        }
 
+        var uri: Uri? = null
+        try {
+            val imageUri: Uri? = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+            if (imageUri != null) {
+                val outputStream = contentResolver.openOutputStream(imageUri)
+                if (outputStream != null) {
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
+                    outputStream.close()
+                    uri = imageUri
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return uri
+    }
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
-            RequestPermissionCode -> if (grantResults.size>0
+            RequestPermissionCode -> if (grantResults.isNotEmpty()
                 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(this@ProfileSettingActivity,
-                    "Permission Granted , Now your application can access Camera",
+                    "Permission Granted, Now your application can access Camera",
                     Toast.LENGTH_SHORT).show()
             }
             else{
                 Toast.makeText(this@ProfileSettingActivity,
-                    "Permission Granted , Now your application can not  access Camera",
+                    "Permission Not Granted, Your application can not access Camera",
                     Toast.LENGTH_SHORT).show()
             }
         }
@@ -236,4 +270,3 @@ class ProfileSettingActivity : AppCompatActivity() {
         const val RequestPermissionCode = 111
     }
 }
-
