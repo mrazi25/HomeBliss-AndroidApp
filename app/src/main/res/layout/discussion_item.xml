@@ -26,6 +26,7 @@
             android:id="@+id/profile_picture"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_person_black"
             android:contentDescription="profile_picture" />
 
@@ -37,8 +38,9 @@
             android:layout_marginStart="8dp"
             android:textColor="@color/almost_black"
             android:text="username"
+            android:fontFamily="@font/source_sans_pro_bold"
             android:textStyle="bold"
-            android:textSize="12sp" />
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -47,7 +49,8 @@
         android:id="@+id/comment_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="comment"
+        android:text="Comment"
+        android:fontFamily="@font/source_sans_pro"
         android:textColor="@color/almost_black"
         android:padding="8dp"
         android:textSize="16sp" />

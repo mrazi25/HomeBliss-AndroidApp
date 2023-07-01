@@ -38,6 +38,10 @@ class ProfileSettingActivity : AppCompatActivity() {
     private var storageRef = Firebase.storage
     private lateinit var firebaseUser: FirebaseUser
 
+    private val CAMERA_CODE = 101
+    private val GALLERY_CODE = 102
+    private val CROP_CODE = 100
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_setting)
@@ -57,13 +61,12 @@ class ProfileSettingActivity : AppCompatActivity() {
         profileIMG.setOnClickListener { openDialog() }
         btnChangeIMG.setOnClickListener { openDialog() }
 
-        val closebtn = findViewById<ImageView>(R.id.close_btn)
-        closebtn.setOnClickListener {
+        findViewById<ImageView>(R.id.close_btn).setOnClickListener {
             startActivity(Intent(this@ProfileSettingActivity, MainActivity::class.java))
         }
 
-        val savebtn = findViewById<ImageView>(R.id.save_btn)
-        savebtn.setOnClickListener {
+
+        findViewById<ImageView>(R.id.save_btn).setOnClickListener {
 
             val name = nameTextView.text.toString()
             val email = emailTextView.text.toString()
@@ -73,10 +76,10 @@ class ProfileSettingActivity : AppCompatActivity() {
                 .putFile(uri_profile_pict!!)
                 .addOnSuccessListener{ task ->
                     task.metadata!!.reference!!.downloadUrl
-                        .addOnSuccessListener {
+                        .addOnSuccessListener { uri ->
                             val userId = FirebaseAuth.getInstance().currentUser!!.uid
                             val mapImage = mapOf(
-                                "image" to it.toString(),
+                                "image" to uri.toString(),
                                 "name" to name,
                                 "email" to email
                             )
@@ -92,7 +95,7 @@ class ProfileSettingActivity : AppCompatActivity() {
                                         )
                                     )
                                 }
-                                .addOnFailureListener {error ->
+                                .addOnFailureListener {
                                     Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
                                 }
                         }
@@ -100,6 +103,15 @@ class ProfileSettingActivity : AppCompatActivity() {
                 }
         }
 
+        findViewById<Button>(R.id.delete_btn).setOnClickListener {
+            firebaseUser?.delete()
+                ?.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(this, "Your Account Have Been Deactivate", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this@ProfileSettingActivity, LoginActivity::class.java))
+                    }
+                }
+        }
     }
 
     private fun userInfo() {
@@ -150,7 +162,7 @@ class ProfileSettingActivity : AppCompatActivity() {
     private fun openCamera() {
         camIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (camIntent.resolveActivity(packageManager) != null) {
-            startActivityForResult(camIntent, 0)
+            startActivityForResult(camIntent, CAMERA_CODE)
         }
     }
 
@@ -159,7 +171,7 @@ class ProfileSettingActivity : AppCompatActivity() {
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         )
         startActivityForResult(Intent.createChooser(galIntent,
-            "Select Image From Gallery "),2)
+            "Select Image From Gallery "),GALLERY_CODE)
     }
 
     private fun enableRuntimePermission() {
@@ -178,18 +190,17 @@ class ProfileSettingActivity : AppCompatActivity() {
     }
 
     private fun cropImages(){
-        /**set crop image*/
         try {
             cropIntent = Intent("com.android.camera.action.CROP")
             cropIntent.setDataAndType(uri_profile_pict,"image/*")
-            cropIntent.putExtra("crop",true)
-            cropIntent.putExtra("outputX",180)
-            cropIntent.putExtra("outputY",180)
-            cropIntent.putExtra("aspectX",3)
-            cropIntent.putExtra("aspectY",4)
-            cropIntent.putExtra("scaleUpIfNeeded",true)
-            cropIntent.putExtra("return-data",true)
-            startActivityForResult(cropIntent,1)
+            cropIntent.putExtra("crop", true)
+            cropIntent.putExtra("aspectX", 1)
+            cropIntent.putExtra("aspectY", 1)
+            cropIntent.putExtra("outputX", 300)
+            cropIntent.putExtra("outputY", 300)
+            cropIntent.putExtra("circleCrop", "true")
+            cropIntent.putExtra("return-data", true)
+            startActivityForResult(cropIntent,CROP_CODE)
 
         }catch (e: ActivityNotFoundException){
             e.printStackTrace()
@@ -198,22 +209,20 @@ class ProfileSettingActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 0 && resultCode == RESULT_OK) {
-            // Gambar yang diambil dari kamera tersedia di 'data'
+        if (requestCode == CAMERA_CODE && resultCode == RESULT_OK) {
             val imageBitmap = data?.getParcelableExtra<Bitmap>("data")
             if (imageBitmap != null) {
-                // Lakukan pemangkasan (crop) atau operasi lain yang diperlukan pada gambar
                 uri_profile_pict = bitmapToUri(this, imageBitmap)
                 cropImages()
                 profileIMG.setImageURI(uri_profile_pict)
             }
-        } else if (requestCode == 2) {
+        } else if (requestCode == GALLERY_CODE) {
             if (resultCode == RESULT_OK && data != null) {
                 uri_profile_pict = data.data!!
                 cropImages()
                 profileIMG.setImageURI(uri_profile_pict)
             }
-        } else if (requestCode == 1) {
+        } else if (requestCode == CROP_CODE) {
             if (resultCode == RESULT_OK && data != null) {
                 val bundle = data.extras
                 val bitmap = bundle?.getParcelable<Bitmap>("data")
@@ -224,7 +233,7 @@ class ProfileSettingActivity : AppCompatActivity() {
             }
         }
     }
-    fun bitmapToUri(context: Context, bitmap: Bitmap): Uri? {
+    private fun bitmapToUri(context: Context, bitmap: Bitmap): Uri? {
         val contentResolver: ContentResolver = context.contentResolver
         val contentValues = ContentValues().apply {
             put(MediaStore.Images.Media.DISPLAY_NAME, "image.jpg")
@@ -264,8 +273,6 @@ class ProfileSettingActivity : AppCompatActivity() {
             }
         }
     }
-
-
     companion object{
         const val RequestPermissionCode = 111
     }

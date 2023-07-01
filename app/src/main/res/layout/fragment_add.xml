@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".fragments.AddFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,11 +14,15 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/dark_teal">
-            <!--bisa nambahin logo di sini boy pake relatip leot plus imejpew-->
-            <RelativeLayout
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </RelativeLayout>
+                android:layout_height="wrap_content"
+                android:text="My Post"
+                android:textSize="24dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="15dp"
+                android:textAlignment="center"
+                android:fontFamily="@font/typographica"/>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -36,10 +39,20 @@
             android:layout_marginRight="32dp"
             android:layout_marginLeft="32dp"
             android:layout_marginTop="40dp"
+            android:layout_marginBottom="40dp"
             android:text="Posting"
+            android:textSize="18dp"
+            android:fontFamily="@font/source_sans_pro_bold"
             android:background="@drawable/border_gradient">
 
         </Button>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recycler_view_add">
+
+        </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 
 </RelativeLayout>

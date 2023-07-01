@@ -1,39 +1,41 @@
 package com.example.babbage_pb_19.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.babbage_pb_19.R
+import com.example.babbage_pb_19.R.id as ID
+import com.example.babbage_pb_19.R.layout as LAYOUT
+import com.example.babbage_pb_19.R.drawable as DRAWABLE
 import com.example.babbage_pb_19.adapter.DiscussionAdapter
 import com.example.babbage_pb_19.data.Discussion
 import com.example.babbage_pb_19.data.DiscussionViewModel
 import com.example.babbage_pb_19.data.Post
-import com.example.babbage_pb_19.data.PostViewModel
-import com.example.babbage_pb_19.repository.DiscussionRepository
+import com.example.babbage_pb_19.fragments.HomeFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 
 class DiscussionActivity : AppCompatActivity() {
 
-    private lateinit var discussionRecyclerView: RecyclerView
-    lateinit var adapter1: DiscussionAdapter
-    private lateinit var viewModel : DiscussionViewModel
-    var listDiscussion = ArrayList<Discussion>()
-    lateinit var post: Post
 
+    private lateinit var discussionRecyclerView: RecyclerView
+    private lateinit var viewModel : DiscussionViewModel
+    private lateinit var adapter1: DiscussionAdapter
+    private lateinit var post: Post
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_discussion)
+        setContentView(LAYOUT.activity_discussion)
 
-        discussionRecyclerView = findViewById(R.id.comments_recycler_view)
+        discussionRecyclerView = findViewById(ID.comments_recycler_view)
 
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.stackFromEnd = true
@@ -47,13 +49,13 @@ class DiscussionActivity : AppCompatActivity() {
         var intent = intent
         post = (intent.getSerializableExtra("postToDiscuss") as? Post)!!
 
-        println(post.postid)
+        showPost()
         viewModel.loadDiscussions(post.postid.toString())
         viewModel.allDiscussion.observe(this) { discussions ->
             adapter1.updateDiscussionList(discussions)
         }
-        findViewById<ImageButton>(R.id.submit_button).setOnClickListener {
-            if (findViewById<EditText>(R.id.comment_input).text.equals("")){
+        findViewById<ImageButton>(ID.submit_button).setOnClickListener {
+            if (findViewById<EditText>(ID.comment_input).text.equals("")){
                 Toast.makeText(this, "Say something in discussion.", Toast.LENGTH_SHORT)
                     .show()
             } else {
@@ -62,6 +64,17 @@ class DiscussionActivity : AppCompatActivity() {
 
         }
 
+        findViewById<TextView>(ID.back_btn).setOnClickListener {
+            startActivity(Intent(this@DiscussionActivity, MainActivity::class.java))
+        }
+
+    }
+
+    fun showPost() {
+        Picasso.get().load(post.postpict)
+            .placeholder(DRAWABLE.ic_image_teal)
+            .error(DRAWABLE.ic_image_teal)
+            .into(findViewById<ImageView>(ID.post_image_discuss))
     }
 
     fun addDiscussion() {
@@ -72,12 +85,12 @@ class DiscussionActivity : AppCompatActivity() {
             // User is signed in
             userRef.child(user.uid).get().addOnSuccessListener { it ->
                 if (it.exists()) {
-                    var discussion = Discussion(findViewById<EditText>(R.id.comment_input).text.toString(),
+                    var discussion = Discussion(findViewById<EditText>(ID.comment_input).text.toString(),
                         user?.uid, it.child("image").value.toString())
                     dbRef.push().setValue(discussion)
                         .addOnSuccessListener {
                             println("Adding new discussion is success")
-                            findViewById<EditText>(R.id.comment_input).setText("")
+                            findViewById<EditText>(ID.comment_input).setText("")
                         }
                         .addOnFailureListener {
                             it.printStackTrace()

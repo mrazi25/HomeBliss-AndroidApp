@@ -19,6 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="HomeBliss"
+            android:fontFamily="@font/source_sans_pro_bold"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="36sp"
@@ -35,6 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="27dp"
         android:text="Login"
+        android:fontFamily="@font/source_sans_pro_bold"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -54,6 +56,7 @@
         android:drawablePadding="10dp"
         android:ems="10"
         android:hint="Password"
+        android:fontFamily="@font/source_sans_pro"
         android:inputType="textPassword"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
@@ -78,6 +81,7 @@
         android:drawablePadding="10dp"
         android:ems="10"
         android:hint="Email"
+        android:fontFamily="@font/source_sans_pro"
         android:inputType="textEmailAddress"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
@@ -97,6 +101,7 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/button_shape"
         android:text="Login"
+        android:fontFamily="@font/source_sans_pro_bold"
         app:layout_constraintEnd_toEndOf="@+id/inputPassword"
         app:layout_constraintStart_toStartOf="@+id/inputPassword"
         app:layout_constraintHorizontal_bias="1.0"
@@ -120,6 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Dont have an Account?"
+            android:fontFamily="@font/source_sans_pro_bold"
             android:textColor="@color/white" />
 
         <TextView
@@ -127,6 +133,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="SignUp"
+            android:fontFamily="@font/source_sans_pro_bold_italic"
             android:textColor="@color/red" />
 
     </LinearLayout>
@@ -157,6 +164,7 @@
             android:background="@drawable/button_shape"
             android:drawableLeft="@drawable/google_logo"
             android:drawablePadding="10dp"
+            android:fontFamily="@font/source_sans_pro_bold"
             android:paddingLeft="20dp"
             android:text="Google"
             android:textAlignment="viewStart"
@@ -171,6 +179,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:layout_marginEnd="0dp"
+            android:fontFamily="@font/source_sans_pro_bold"
             android:background="@drawable/button_shape"
             android:drawableLeft="@drawable/facebook_logo"
             android:drawablePadding="5dp"

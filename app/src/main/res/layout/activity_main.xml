@@ -48,7 +48,7 @@
                 app:itemIconTint="#353535"
                 app:itemTextColor="#353535"
                 app:itemRippleColor="@android:color/darker_gray"
-                app:labelVisibilityMode="selected"
+                app:labelVisibilityMode="auto"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:menu="@menu/menu_main" />
         </androidx.appcompat.widget.Toolbar>

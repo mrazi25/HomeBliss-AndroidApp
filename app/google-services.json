@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "94599777044",
+    "firebase_url": "https://babbage-pb-19-default-rtdb.firebaseio.com",
     "project_id": "babbage-pb-19",
     "storage_bucket": "babbage-pb-19.appspot.com"
   },
@@ -14,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "94599777044-8pdma1l1sgiu39jjme1pdp63htgc1l0i.apps.googleusercontent.com",
+          "client_id": "94599777044-776te2ratk1le43ap9c3hie1hsjunfom.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.babbage_pb_19",
+            "certificate_hash": "30c388e7be35a301b82abd3a1a9f6af0703187cf"
+          }
+        },
+        {
+          "client_id": "94599777044-45ovsi6f4dlurf3dkicig5de0umoebn5.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,7 +36,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "94599777044-8pdma1l1sgiu39jjme1pdp63htgc1l0i.apps.googleusercontent.com",
+              "client_id": "94599777044-45ovsi6f4dlurf3dkicig5de0umoebn5.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

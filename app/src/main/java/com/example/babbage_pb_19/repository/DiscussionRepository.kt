@@ -2,21 +2,18 @@ package com.example.babbage_pb_19.repository
 
 import androidx.lifecycle.MutableLiveData
 import com.example.babbage_pb_19.data.Discussion
-import com.example.babbage_pb_19.data.Post
-import com.google.firebase.database.*
-
 import com.google.firebase.database.*
 
 class DiscussionRepository {
     private val dbDiscussionReference: DatabaseReference = FirebaseDatabase.getInstance().getReference("Discussion")
 
     @Volatile
-    private var INSTANCE: DiscussionRepository? = null
+    private var instance: DiscussionRepository? = null
 
     fun getInstance(): DiscussionRepository {
-        return INSTANCE ?: synchronized(this) {
+        return instance ?: synchronized(this) {
             val instance = DiscussionRepository()
-            INSTANCE = instance
+            this.instance = instance
             instance
         }
     }

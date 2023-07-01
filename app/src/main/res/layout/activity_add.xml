@@ -21,11 +21,11 @@
                     android:id="@+id/close_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
+                    android:fontFamily="@font/source_sans_pro_bold"
                     android:layout_marginRight="15dp"
                     android:text="Close"
                     android:layout_alignParentStart="true"
-                    android:textStyle="bold"
-                    android:textSize="18dp"
+                    android:textSize="20dp"
                     android:textAlignment="center">
 
                 </TextView>
@@ -37,8 +37,9 @@
                     android:layout_alignParentEnd="true"
                     android:text="Post"
                     android:textStyle="bold"
-                    android:textSize="18dp"
-                    android:textAlignment="center">
+                    android:textSize="20dp"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/source_sans_pro_bold">
 
                 </TextView>
             </RelativeLayout>
@@ -68,6 +69,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"
+            android:fontFamily="@font/source_sans_pro_light_italic"
             android:hint="Fill the title for your post"
             >
 
@@ -80,6 +82,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"
+            android:fontFamily="@font/source_sans_pro_light_italic"
             android:hint="Fill the caption for your post"
             >
 

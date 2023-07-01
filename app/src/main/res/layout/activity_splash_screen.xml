@@ -21,7 +21,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/loading_progbar"
         >
-
     </ProgressBar>
 
 </LinearLayout>

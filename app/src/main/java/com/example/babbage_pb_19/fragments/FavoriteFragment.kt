@@ -5,21 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.babbage_pb_19.R
+import com.example.babbage_pb_19.R.id as ID
+import com.example.babbage_pb_19.R.layout as LAYOUT
 import com.example.babbage_pb_19.adapter.LikeAdapter
-import com.example.babbage_pb_19.adapter.PostAdapter
-import com.example.babbage_pb_19.data.Post
+import com.example.babbage_pb_19.data.LikeViewModel
 import com.example.babbage_pb_19.data.PostViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,14 +29,16 @@ private const val ARG_PARAM2 = "param2"
 class FavoriteFragment : Fragment() {
 
     private lateinit var viewModel : PostViewModel
+    private lateinit var viewModel2 : LikeViewModel
     private lateinit var postRecyclerView: RecyclerView
     lateinit var adapter: LikeAdapter
+    private var user_id: String? = FirebaseAuth.getInstance().currentUser?.uid
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        postRecyclerView = view.findViewById(R.id.recycler_view_home)
+        postRecyclerView = view.findViewById(ID.recycler_view_fav)
 
         val linearLayoutManager = LinearLayoutManager(context)
         linearLayoutManager.stackFromEnd = true
@@ -50,17 +46,20 @@ class FavoriteFragment : Fragment() {
         postRecyclerView.layoutManager = linearLayoutManager
         postRecyclerView.setHasFixedSize(true)
         adapter = LikeAdapter()
-        adapter.myLikes()
+        //adapter.myLikes()
         postRecyclerView.adapter = adapter
 
         viewModel = ViewModelProvider(this)[PostViewModel::class.java]
+        viewModel2 = ViewModelProvider(this)[LikeViewModel::class.java]
 
         viewModel.allUsers.observe(viewLifecycleOwner) {
-
             adapter.updatePostList(it)
-
         }
 
+        viewModel2.loadLikes(user_id.toString())
+        viewModel2.allLikes.observe(viewLifecycleOwner) {
+            adapter.updateLikeList(it)
+        }
     }
 
     // TODO: Rename and change types of parameters
@@ -79,7 +78,7 @@ class FavoriteFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        return inflater.inflate(LAYOUT.fragment_favorite, container, false)
     }
 
     companion object {

@@ -5,11 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.babbage_pb_19.R
+import com.example.babbage_pb_19.R.id as ID
+import com.example.babbage_pb_19.R.layout as LAYOUT
+import com.example.babbage_pb_19.R.drawable as DRAWABLE
 import com.example.babbage_pb_19.activity.DiscussionActivity
 import com.example.babbage_pb_19.data.Post
 import com.google.firebase.auth.FirebaseAuth
@@ -25,7 +26,7 @@ class PostAdapter : RecyclerView.Adapter<PostAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(
-            R.layout.post_item,
+            LAYOUT.post_item,
             parent,false
         )
         this.parent = parent
@@ -39,10 +40,10 @@ class PostAdapter : RecyclerView.Adapter<PostAdapter.MyViewHolder>() {
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.child(postId).exists()) {
-                    imageView.setImageResource(R.drawable.heart_filled)
+                    imageView.setImageResource(DRAWABLE.heart_filled)
                     imageView.tag = "Liked"
                 } else {
-                    imageView.setImageResource(R.drawable.heart_transparant)
+                    imageView.setImageResource(DRAWABLE.heart_transparant)
                     imageView.tag = "Like"
                 }
             }
@@ -65,9 +66,10 @@ class PostAdapter : RecyclerView.Adapter<PostAdapter.MyViewHolder>() {
                 if (it.exists()) {
                     Picasso.get()
                         .load(it.child("image").value.toString())
-                        .placeholder(R.drawable.homebliss)
-                        .error(R.drawable.homebliss)
+                        .placeholder(DRAWABLE.homebliss)
+                        .error(DRAWABLE.homebliss)
                         .into(holder.profileImage)
+                    holder.name1.text = it.child("name").value.toString()
                 }
             }
         } else {
@@ -79,11 +81,10 @@ class PostAdapter : RecyclerView.Adapter<PostAdapter.MyViewHolder>() {
         //Meletakan Postingan
         Picasso.get()
             .load(currentitem.postpict)
-            .placeholder(R.drawable.ic_image_teal)
-            .error(R.drawable.ic_image_teal)
+            .placeholder(DRAWABLE.ic_image_teal)
+            .error(DRAWABLE.ic_image_teal)
             .into(holder.postImage)
 
-        holder.name1.text = currentitem.poster_name
         holder.caption.text = currentitem.caption
         holder.judul.text = currentitem.judul
 
@@ -129,13 +130,13 @@ class PostAdapter : RecyclerView.Adapter<PostAdapter.MyViewHolder>() {
     }
     class  MyViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
 
-        var profileImage : CircleImageView = itemView.findViewById(R.id.user_profile)
-        var postImage : ImageView = itemView.findViewById(R.id.post_image_home)
-        var likeBtn : ImageView = itemView.findViewById(R.id.post_image_like_btn)
-        var judul : TextView = itemView.findViewById(R.id.judul)
-        var discussionBtn : ImageView = itemView.findViewById(R.id.post_image_discuss_btn)
-        var name1 : TextView = itemView.findViewById(R.id.user_name_search)
-        var caption : TextView = itemView.findViewById(R.id.description)
+        var profileImage : CircleImageView = itemView.findViewById(ID.user_profile)
+        var postImage : ImageView = itemView.findViewById(ID.post_image_home)
+        var likeBtn : ImageView = itemView.findViewById(ID.post_image_like_btn)
+        var judul : TextView = itemView.findViewById(ID.judul)
+        var discussionBtn : ImageView = itemView.findViewById(ID.post_image_discuss_btn)
+        var name1 : TextView = itemView.findViewById(ID.user_name_search)
+        var caption : TextView = itemView.findViewById(ID.description)
         
     }
 

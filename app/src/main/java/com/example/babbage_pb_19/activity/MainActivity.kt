@@ -1,6 +1,5 @@
 package com.example.babbage_pb_19.activity
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -49,9 +48,6 @@ class MainActivity : AppCompatActivity() {
         val navView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
 
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
-
-        val intent = Intent()
-        //intent.putExtra("postid", value)
 
         moveToFragment(HomeFragment())
     }

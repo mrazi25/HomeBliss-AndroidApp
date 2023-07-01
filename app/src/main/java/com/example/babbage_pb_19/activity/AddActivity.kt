@@ -1,10 +1,10 @@
 package com.example.babbage_pb_19.activity
 
 import android.Manifest
-import android.content.ActivityNotFoundException
-import android.content.Intent
+import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Typeface
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,42 +15,44 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
-import com.example.babbage_pb_19.R
+import com.example.babbage_pb_19.R.id as ID
+import com.example.babbage_pb_19.R.layout as LAYOUT
+import com.example.babbage_pb_19.R.drawable as DRAWABLE
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
-import java.io.File
 
 class AddActivity : AppCompatActivity() {
 
     private var storageRef = Firebase.storage
-    private val db = FirebaseFirestore.getInstance()
     private lateinit var firebaseUser: FirebaseUser
+    private lateinit var postPict: ImageView
 
-    private lateinit var file: File
-    private lateinit var uri : Uri
+    private var uri_post_pict : Uri? = null
     private lateinit var camIntent:Intent
     private lateinit var galIntent:Intent
     private lateinit var cropIntent:Intent
 
+    private val CAMERA_CODE = 101
+    private val GALLERY_CODE = 102
+    private val CROP_CODE = 100
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add)
+        setContentView(LAYOUT.activity_add)
 
         enableRuntimePermission()
         firebaseUser = FirebaseAuth.getInstance().currentUser!!
         storageRef = FirebaseStorage.getInstance()
-        val userRef = FirebaseDatabase.getInstance().getReference().child("Users")
+        postPict = findViewById(ID.image_post)
+        val userRef = FirebaseDatabase.getInstance().reference.child("Users")
         val userId = FirebaseAuth.getInstance().currentUser!!.uid
         val databaseReference = FirebaseDatabase.getInstance().reference.child("Post")
 
-        val userRefFirestore = db.collection("Users")
-        val databaseReferenceFirestore = db.collection("Post")
+
 
         val postId = databaseReference.push().key
         var profileImg = ""
@@ -62,23 +64,23 @@ class AddActivity : AppCompatActivity() {
                 profileImg = it1.child("image").value.toString()
             }
         }
-        findViewById<ImageView>(R.id.image_post).setOnClickListener { openDialog() }
+        findViewById<ImageView>(ID.image_post).setOnClickListener { openDialog() }
 
-        findViewById<TextView>(R.id.close_btn).setOnClickListener {
+        findViewById<TextView>(ID.close_btn).setOnClickListener {
             startActivity(Intent(this@AddActivity, MainActivity::class.java))
         }
-        findViewById<TextView>(R.id.save_btn).setOnClickListener {
+        findViewById<TextView>(ID.save_btn).setOnClickListener {
 
             storageRef.getReference("Posts Pict").child(System.currentTimeMillis().toString())
-                .putFile(uri)
+                .putFile(uri_post_pict!!)
                 .addOnSuccessListener { task ->
                     task.metadata!!.reference!!.downloadUrl
-                        .addOnSuccessListener {
-                            val caption = findViewById<EditText>(R.id.caption_post).text.toString()
-                            val judul = findViewById<EditText>(R.id.judul_post).text.toString()
+                        .addOnSuccessListener { uri ->
+                            val caption = findViewById<EditText>(ID.caption_post).text.toString()
+                            val judul = findViewById<EditText>(ID.judul_post).text.toString()
                             val dataMap = mapOf(
                                 "postid" to postId,
-                                "postpict" to it.toString(),
+                                "postpict" to uri.toString(),
                                 "caption" to caption,
                                 "judul" to judul,
                                 "poster_uid" to userId,
@@ -89,7 +91,7 @@ class AddActivity : AppCompatActivity() {
                             databaseReference.child(postId!!).updateChildren(dataMap)
                                 .addOnSuccessListener {
                                     Toast.makeText(this, "Successful", Toast.LENGTH_SHORT).show()
-                                    var dbFirestore = Firebase.firestore
+                                    val dbFirestore = Firebase.firestore
                                     dbFirestore.collection("Post").document().set(dataMap)
                                         .addOnSuccessListener {
                                             Toast.makeText(this, "Save Successful to Firestore", Toast.LENGTH_SHORT).show()
@@ -100,11 +102,11 @@ class AddActivity : AppCompatActivity() {
                                                 )
                                             )
                                         }
-                                        .addOnFailureListener { error ->
+                                        .addOnFailureListener {
                                             Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
                                         }
                                 }
-                                .addOnFailureListener { error ->
+                                .addOnFailureListener {
                                     Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
                                 }
                         }
@@ -115,39 +117,27 @@ class AddActivity : AppCompatActivity() {
 
     private fun openDialog() {
         val openDialog = AlertDialog.Builder(this@AddActivity)
-        openDialog.setIcon(R.drawable.ic_image_teal)
+        openDialog.setIcon(DRAWABLE.ic_image_teal)
         openDialog.setTitle("Choose your Image from")
-        openDialog.setNegativeButton("Gallery"){
-                dialog,_->
+        openDialog.setNegativeButton("Camera") { dialog, _ ->
+            openCamera()
+            dialog.dismiss()
+        }
+        openDialog.setPositiveButton("Gallery") { dialog, _ ->
             openGallery()
             dialog.dismiss()
         }
-        openDialog.setNeutralButton("Cancel"){
-                dialog,_->
+        openDialog.setNeutralButton("Cancel") { dialog, _ ->
             dialog.dismiss()
         }
         openDialog.create()
         openDialog.show()
-
     }
 
-    private fun cropImages(){
-        /**set crop image*/
-        try {
-            cropIntent = Intent("com.android.camera.action.CROP")
-            cropIntent.setDataAndType(uri,"image/*")
-            cropIntent.putExtra("crop",true)
-            cropIntent.putExtra("outputX",180)
-            cropIntent.putExtra("outputY",180)
-            cropIntent.putExtra("aspectX",4)
-            cropIntent.putExtra("aspectY",4)
-            cropIntent.putExtra("scaleUpIfNeeded",true)
-            cropIntent.putExtra("scaleLeftIfNeeded", true)
-            cropIntent.putExtra("return-data",true)
-            startActivityForResult(cropIntent,1)
-
-        }catch (e: ActivityNotFoundException){
-            e.printStackTrace()
+    private fun openCamera() {
+        camIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (camIntent.resolveActivity(packageManager) != null) {
+            startActivityForResult(camIntent, CAMERA_CODE)
         }
     }
 
@@ -155,12 +145,13 @@ class AddActivity : AppCompatActivity() {
         galIntent = Intent(Intent.ACTION_PICK,
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         )
-        startActivityForResult(Intent.createChooser(galIntent, "Select Image From Gallery "),2)
+        startActivityForResult(Intent.createChooser(galIntent,
+            "Select Image From Gallery "),GALLERY_CODE)
     }
 
     private fun enableRuntimePermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(
-                this@AddActivity, Manifest.permission.CAMERA
+                this@AddActivity,Manifest.permission.CAMERA
             )){
             Toast.makeText(this@AddActivity,
                 "Camera Permission allows us to Camera App",
@@ -173,44 +164,90 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 0 && resultCode == RESULT_OK){
-            cropImages()
-        } else if (requestCode == 2){
-            if (data != null){
-                uri = data.data!!
-                cropImages()
-                findViewById<ImageView>(R.id.image_post).setImageURI(uri)
-            }
-        }
-        else if (requestCode == 1){
-            if (data != null){
-                val bundle = data.extras
-                val bitmap = bundle!!.getParcelable<Bitmap>("data")
-                findViewById<ImageView>(R.id.image_post).setImageBitmap(bitmap)
-            }
+    private fun cropImages(){
+        try {
+            cropIntent = Intent("com.android.camera.action.CROP")
+            cropIntent.setDataAndType(uri_post_pict,"image/*")
+            cropIntent.putExtra("crop",true)
+            cropIntent.putExtra("outputX",900)
+            cropIntent.putExtra("outputY",600)
+            cropIntent.putExtra("aspectX",9)
+            cropIntent.putExtra("aspectY",6)
+            cropIntent.putExtra("scale", true)
+            cropIntent.putExtra("return-data", true)
+            startActivityForResult(cropIntent,CROP_CODE)
+
+        }catch (e: ActivityNotFoundException){
+            e.printStackTrace()
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CAMERA_CODE && resultCode == RESULT_OK) {
+            val imageBitmap = data?.getParcelableExtra<Bitmap>("data")
+            if (imageBitmap != null) {
+                uri_post_pict = bitmapToUri(this, imageBitmap)
+                cropImages()
+                postPict.setImageURI(uri_post_pict)
+            }
+        } else if (requestCode == GALLERY_CODE) {
+            if (resultCode == RESULT_OK && data != null) {
+                uri_post_pict = data.data!!
+                cropImages()
+                postPict.setImageURI(uri_post_pict)
+            }
+        } else if (requestCode == CROP_CODE) {
+            if (resultCode == RESULT_OK && data != null) {
+                val bundle = data.extras
+                val bitmap = bundle?.getParcelable<Bitmap>("data")
+                if (bitmap != null) {
+                    uri_post_pict = bitmapToUri(this, bitmap)
+                    postPict.setImageURI(uri_post_pict)
+                }
+            }
+        }
+    }
+    private fun bitmapToUri(context: Context, bitmap: Bitmap): Uri? {
+        val contentResolver: ContentResolver = context.contentResolver
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, "image.jpg")
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        }
+
+        var uri: Uri? = null
+        try {
+            val imageUri: Uri? = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+            if (imageUri != null) {
+                val outputStream = contentResolver.openOutputStream(imageUri)
+                if (outputStream != null) {
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                    outputStream.close()
+                    uri = imageUri
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return uri
+    }
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
-            RequestPermissionCode -> if (grantResults.size>0
+            RequestPermissionCode -> if (grantResults.isNotEmpty()
                 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(this@AddActivity,
-                    "Permission Granted , Now your application can access Camera",
+                    "Permission Granted, Now your application can access Camera",
                     Toast.LENGTH_SHORT).show()
             }
             else{
                 Toast.makeText(this@AddActivity,
-                    "Permission Granted , Now your application can not  access Camera",
+                    "Permission Not Granted, Your application can not access Camera",
                     Toast.LENGTH_SHORT).show()
             }
         }
     }
-
-
     companion object{
         const val RequestPermissionCode = 111
     }

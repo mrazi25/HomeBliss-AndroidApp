@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.babbage_pb_19.R
+import com.example.babbage_pb_19.R.id as ID
+import com.example.babbage_pb_19.R.layout as LAYOUT
+import com.example.babbage_pb_19.R.drawable as DRAWABLE
 import com.example.babbage_pb_19.data.Discussion
-import com.example.babbage_pb_19.data.User
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
@@ -22,7 +22,7 @@ class DiscussionAdapter() : RecyclerView.Adapter<DiscussionAdapter.MyViewHolder>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(
-            R.layout.discussion_item,
+            LAYOUT.discussion_item,
             parent, false
         )
         this.parent = parent
@@ -50,8 +50,8 @@ class DiscussionAdapter() : RecyclerView.Adapter<DiscussionAdapter.MyViewHolder>
 
         Picasso.get()
             .load(currentitem.img)
-            .placeholder(R.drawable.homebliss)
-            .error(R.drawable.homebliss)
+            .placeholder(DRAWABLE.homebliss)
+            .error(DRAWABLE.homebliss)
             .into(holder.profile_pict)
     }
 
@@ -66,8 +66,8 @@ class DiscussionAdapter() : RecyclerView.Adapter<DiscussionAdapter.MyViewHolder>
 
     }
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var profile_pict: CircleImageView = itemView.findViewById(R.id.profile_picture)
-        var commenter: TextView = itemView.findViewById(R.id.commenter_name)
-        var comment_text: TextView = itemView.findViewById(R.id.comment_text)
+        var profile_pict: CircleImageView = itemView.findViewById(ID.profile_picture)
+        var commenter: TextView = itemView.findViewById(ID.commenter_name)
+        var comment_text: TextView = itemView.findViewById(ID.comment_text)
     }
 }
