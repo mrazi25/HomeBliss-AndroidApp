@@ -65,7 +65,6 @@ class ProfileSettingActivity : AppCompatActivity() {
             startActivity(Intent(this@ProfileSettingActivity, MainActivity::class.java))
         }
 
-
         findViewById<ImageView>(R.id.save_btn).setOnClickListener {
 
             val name = nameTextView.text.toString()
