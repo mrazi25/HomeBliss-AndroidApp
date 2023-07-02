@@ -55,11 +55,7 @@ class ProfileFragment : Fragment() {
                         FirebaseAuth.getInstance().signOut()
                     }
                     startActivity(Intent(context, LoginActivity::class.java))
-                } else {
-                    println("Tidak ada informasi penyedia otentikasi yang tersedia")
                 }
-            } else {
-                println("Pengguna tidak sedang login")
             }
         }
         userInfo()
