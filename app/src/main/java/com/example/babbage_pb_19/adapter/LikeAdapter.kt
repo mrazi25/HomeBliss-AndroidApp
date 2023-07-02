@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.babbage_pb_19.R.id as ID
 import com.example.babbage_pb_19.R.layout as LAYOUT
 import com.example.babbage_pb_19.R.drawable as DRAWABLE
 import com.example.babbage_pb_19.activity.DiscussionActivity
-import com.example.babbage_pb_19.data.Like
 import com.example.babbage_pb_19.data.Post
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -23,8 +23,6 @@ class LikeAdapter() : RecyclerView.Adapter<LikeAdapter.MyViewHolder>() {
 
     private val postList = ArrayList<Post>()
     private val likeList: MutableMap<String, Long> = mutableMapOf()
-    private val mylikes = ArrayList<Pair<String, Long>>()
-    private val idPostThatILike = ArrayList<String>()
     private var firebaseUser = FirebaseAuth.getInstance().currentUser
     private lateinit var parent: ViewGroup
 
@@ -60,61 +58,6 @@ class LikeAdapter() : RecyclerView.Adapter<LikeAdapter.MyViewHolder>() {
             }
         })
     }
-//    open fun myLikes() {
-//        var firebaseUser = FirebaseAuth.getInstance().currentUser
-//        var databaseReference = FirebaseDatabase.getInstance().reference
-//            .child("Likes")
-//            .child(firebaseUser!!.uid)
-//            .orderByValue().limitToLast(10)
-//        databaseReference.addValueEventListener(object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                for (snapshot in dataSnapshot.children) {
-//                    val userId = snapshot.key
-//                    val timestamp = snapshot.value as Long
-//                    mylikes.add(Pair(userId, timestamp) as Pair<String, Long>)
-//                }
-//
-//                // Melakukan pengurutan data secara descending berdasarkan timestamp
-//                mylikes.sortByDescending { it.second }
-//
-//                println(mylikes)
-//                // Menampilkan data
-//                for (like in mylikes) {
-//                    idPostThatILike.add(like.second.toString())
-//                }
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//                // Jika terjadi error saat membaca database
-//                println("Error: ${databaseError.message}")
-//            }
-//        })
-//
-//    }
-//    open fun myLikes() {
-//        var firebaseUser = FirebaseAuth.getInstance().currentUser
-//        var databaseReference = FirebaseDatabase.getInstance().reference
-//            .child("Likes")
-//            .child(firebaseUser!!.uid)
-//            .orderByValue().limitToLast(10)
-//        databaseReference.addValueEventListener(object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                // Mendapatkan nilai terbaru dari database
-//                for (snapshot in dataSnapshot.children) {
-//                    val key = snapshot.key.toString()
-//                    key.let { mylikes.add(it) }
-//                }
-//                println(mylikes.toString())
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//                // Jika terjadi error saat membaca database
-//                println("Error: ${databaseError.message}")
-//            }
-//        })
-//
-//    }
-
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
         val targetValue = likeList.toList()[position].first
@@ -128,28 +71,29 @@ class LikeAdapter() : RecyclerView.Adapter<LikeAdapter.MyViewHolder>() {
             }
         }
         val currentitem = postList[foundIndex]
-        //Meletakan Photo Profile
-        //if(idPostThatILike.contains(currentitem.postid)) {
         holder.cardHolder.visibility = View.VISIBLE
         val userRef = FirebaseDatabase.getInstance().reference.child("Users")
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
-            // User is signed in
-            userRef.child(currentitem.poster_uid.toString()).get().addOnSuccessListener {
-                if (it.exists()) {
-                    //Meletakan Photo Profile
-                    Picasso.get()
-                        .load(it.child("image").value.toString())
-                        .placeholder(DRAWABLE.homebliss)
-                        .error(DRAWABLE.homebliss)
-                        .into(holder.profileImage)
+            userRef.child(currentitem.poster_uid.toString()).get()
+                .addOnSuccessListener {
+                    if (it.exists()) {
+                        Picasso.get()
+                            .load(it.child("image").value.toString())
+                            .placeholder(DRAWABLE.homebliss)
+                            .error(DRAWABLE.homebliss)
+                            .into(holder.profileImage)
+                    }
                 }
-            }
+                .addOnFailureListener {
+                    Toast.makeText(parent.context, "Error Occurred ${it.localizedMessage}", Toast.LENGTH_SHORT)
+                        .show()
+                }
         } else {
-            // No user is signed in
+            Toast.makeText(parent.context, "Error Occurred", Toast.LENGTH_SHORT)
+                .show()
         }
 
-        //Meletakan Postingan
         Picasso.get()
             .load(currentitem.postpict)
             .placeholder(com.example.babbage_pb_19.R.drawable.ic_image_teal)
@@ -174,10 +118,6 @@ class LikeAdapter() : RecyclerView.Adapter<LikeAdapter.MyViewHolder>() {
             }
 
         }
-//        }else {
-//            holder.cardHolder.visibility = View.GONE
-//            holder.cardHolder.layoutParams = RecyclerView.LayoutParams(0, 0)
-//        }
         holder.discussionBtn.setOnClickListener {
             var postToDiscuss=currentitem
             val intent = Intent(parent.context, DiscussionActivity::class.java)

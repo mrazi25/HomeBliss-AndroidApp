@@ -62,23 +62,27 @@ class PostAdapter : RecyclerView.Adapter<PostAdapter.MyViewHolder>() {
         val userRef = FirebaseDatabase.getInstance().reference.child("Users")
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
-            userRef.child(currentitem.poster_uid.toString()).get().addOnSuccessListener {
-                if (it.exists()) {
-                    Picasso.get()
-                        .load(it.child("image").value.toString())
-                        .placeholder(DRAWABLE.homebliss)
-                        .error(DRAWABLE.homebliss)
-                        .into(holder.profileImage)
-                    holder.name1.text = it.child("name").value.toString()
+            userRef.child(currentitem.poster_uid.toString()).get()
+                .addOnSuccessListener {
+                    if (it.exists()) {
+                        Picasso.get()
+                            .load(it.child("image").value.toString())
+                            .placeholder(DRAWABLE.homebliss)
+                            .error(DRAWABLE.homebliss)
+                            .into(holder.profileImage)
+                        holder.name1.text = it.child("name").value.toString()
+                    }
                 }
-            }
+                .addOnFailureListener {
+                    Toast.makeText(parent.context, "Error Occurred ${it.localizedMessage}", Toast.LENGTH_SHORT)
+                        .show()
+                }
         } else {
             Toast.makeText(parent.context, "Error Occurred", Toast.LENGTH_SHORT)
                 .show()
             println("Cannot get the image path")
         }
 
-        //Meletakan Postingan
         Picasso.get()
             .load(currentitem.postpict)
             .placeholder(DRAWABLE.ic_image_teal)

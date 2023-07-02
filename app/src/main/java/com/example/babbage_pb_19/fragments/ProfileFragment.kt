@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.babbage_pb_19.R.drawable as DRAWABLE
 import com.example.babbage_pb_19.activity.LoginActivity
@@ -50,12 +51,11 @@ class ProfileFragment : Fragment() {
                         .placeholder(DRAWABLE.homebliss)
                         .error(DRAWABLE.homebliss)
                         .into(_binding.ivProfile)
-
                 }
             }
         } else {
-
+            Toast.makeText(context, "Error Occurred", Toast.LENGTH_SHORT)
+                .show()
         }
     }
-
 }

@@ -6,9 +6,7 @@ import com.google.firebase.database.*
 
 class DiscussionRepository {
     private val dbDiscussionReference: DatabaseReference = FirebaseDatabase.getInstance().getReference("Discussion")
-
-    @Volatile
-    private var instance: DiscussionRepository? = null
+    @Volatile private var instance: DiscussionRepository? = null
 
     fun getInstance(): DiscussionRepository {
         return instance ?: synchronized(this) {
@@ -17,8 +15,6 @@ class DiscussionRepository {
             instance
         }
     }
-
-
     fun loadDiscussions(postid: String, discussionList: MutableLiveData<List<Discussion>>) {
         dbDiscussionReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -40,9 +36,8 @@ class DiscussionRepository {
                     e.printStackTrace()
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
-                // Handle error
+                error.message
             }
         })
     }

@@ -171,28 +171,7 @@
             android:textAllCaps="false"
             android:textIsSelectable="false" />
 
-        <Button
-            android:id="@+id/btnFacebook"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="0dp"
-            android:fontFamily="@font/source_sans_pro_bold"
-            android:background="@drawable/button_shape"
-            android:drawableLeft="@drawable/facebook_logo"
-            android:drawablePadding="5dp"
-            android:paddingLeft="15dp"
-            android:text="Facebook"
-            android:textAlignment="textStart"
-            android:textAllCaps="false"
-            app:layout_constraintBottom_toBottomOf="@+id/btnGoogle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btnGoogle"
-            app:layout_constraintTop_toTopOf="@+id/btnGoogle"
-            app:layout_constraintVertical_bias="1.0" />
+
     </LinearLayout>
 
 

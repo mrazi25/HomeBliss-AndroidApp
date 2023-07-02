@@ -7,11 +7,10 @@ import com.example.babbage_pb_19.repository.PostRepository
 
 class PostViewModel : ViewModel() {
     private val repository : PostRepository = PostRepository().getInstance()
-    private val _allUsers = MutableLiveData<List<Post>>()
-    val allUsers : LiveData<List<Post>> = _allUsers
-
+    private val _allPosts = MutableLiveData<List<Post>>()
+    val allPosts : LiveData<List<Post>> = _allPosts
 
     init {
-        repository.loadUsers(_allUsers)
+        repository.loadPosts(_allPosts)
     }
 }

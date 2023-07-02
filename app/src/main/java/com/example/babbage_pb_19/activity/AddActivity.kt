@@ -32,7 +32,7 @@ class AddActivity : AppCompatActivity() {
     private lateinit var firebaseUser: FirebaseUser
     private lateinit var postPict: ImageView
 
-    private var uri_post_pict : Uri? = null
+    private var uriPostPict : Uri? = null
     private lateinit var camIntent:Intent
     private lateinit var galIntent:Intent
     private lateinit var cropIntent:Intent
@@ -48,12 +48,10 @@ class AddActivity : AppCompatActivity() {
         firebaseUser = FirebaseAuth.getInstance().currentUser!!
         storageRef = FirebaseStorage.getInstance()
         postPict = findViewById(ID.image_post)
+
         val userRef = FirebaseDatabase.getInstance().reference.child("Users")
         val userId = FirebaseAuth.getInstance().currentUser!!.uid
         val databaseReference = FirebaseDatabase.getInstance().reference.child("Post")
-
-
-
         val postId = databaseReference.push().key
         var profileImg = ""
         var name = ""
@@ -72,7 +70,7 @@ class AddActivity : AppCompatActivity() {
         findViewById<TextView>(ID.save_btn).setOnClickListener {
 
             storageRef.getReference("Posts Pict").child(System.currentTimeMillis().toString())
-                .putFile(uri_post_pict!!)
+                .putFile(uriPostPict!!)
                 .addOnSuccessListener { task ->
                     task.metadata!!.reference!!.downloadUrl
                         .addOnSuccessListener { uri ->
@@ -103,14 +101,23 @@ class AddActivity : AppCompatActivity() {
                                             )
                                         }
                                         .addOnFailureListener {
-                                            Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(this, "Error Occurred ${it.localizedMessage}", Toast.LENGTH_SHORT)
+                                                .show()
                                         }
                                 }
                                 .addOnFailureListener {
-                                    Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this, "Error Occurred ${it.localizedMessage}", Toast.LENGTH_SHORT)
+                                        .show()
                                 }
                         }
-
+                        .addOnFailureListener {
+                            Toast.makeText(this, "Error Occurred ${it.localizedMessage}", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Error Occurred ${it.localizedMessage}", Toast.LENGTH_SHORT)
+                        .show()
                 }
         }
     }
@@ -154,7 +161,7 @@ class AddActivity : AppCompatActivity() {
                 this@AddActivity,Manifest.permission.CAMERA
             )){
             Toast.makeText(this@AddActivity,
-                "Camera Permission allows us to Camera App",
+                "Camera Permission for using the Camera",
                 Toast.LENGTH_SHORT).show()
         }
         else{
@@ -167,7 +174,7 @@ class AddActivity : AppCompatActivity() {
     private fun cropImages(){
         try {
             cropIntent = Intent("com.android.camera.action.CROP")
-            cropIntent.setDataAndType(uri_post_pict,"image/*")
+            cropIntent.setDataAndType(uriPostPict,"image/*")
             cropIntent.putExtra("crop",true)
             cropIntent.putExtra("outputX",900)
             cropIntent.putExtra("outputY",600)
@@ -179,6 +186,8 @@ class AddActivity : AppCompatActivity() {
 
         }catch (e: ActivityNotFoundException){
             e.printStackTrace()
+            Toast.makeText(this, "Error Occurred ${e.localizedMessage}", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
@@ -187,23 +196,23 @@ class AddActivity : AppCompatActivity() {
         if (requestCode == CAMERA_CODE && resultCode == RESULT_OK) {
             val imageBitmap = data?.getParcelableExtra<Bitmap>("data")
             if (imageBitmap != null) {
-                uri_post_pict = bitmapToUri(this, imageBitmap)
+                uriPostPict = bitmapToUri(this, imageBitmap)
                 cropImages()
-                postPict.setImageURI(uri_post_pict)
+                postPict.setImageURI(uriPostPict)
             }
         } else if (requestCode == GALLERY_CODE) {
             if (resultCode == RESULT_OK && data != null) {
-                uri_post_pict = data.data!!
+                uriPostPict = data.data!!
                 cropImages()
-                postPict.setImageURI(uri_post_pict)
+                postPict.setImageURI(uriPostPict)
             }
         } else if (requestCode == CROP_CODE) {
             if (resultCode == RESULT_OK && data != null) {
                 val bundle = data.extras
                 val bitmap = bundle?.getParcelable<Bitmap>("data")
                 if (bitmap != null) {
-                    uri_post_pict = bitmapToUri(this, bitmap)
-                    postPict.setImageURI(uri_post_pict)
+                    uriPostPict = bitmapToUri(this, bitmap)
+                    postPict.setImageURI(uriPostPict)
                 }
             }
         }
@@ -228,6 +237,8 @@ class AddActivity : AppCompatActivity() {
             }
         } catch (e: Exception) {
             e.printStackTrace()
+            Toast.makeText(this, "Error Occurred ${e.localizedMessage}", Toast.LENGTH_SHORT)
+                .show()
         }
 
         return uri
@@ -238,12 +249,12 @@ class AddActivity : AppCompatActivity() {
             RequestPermissionCode -> if (grantResults.isNotEmpty()
                 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(this@AddActivity,
-                    "Permission Granted, Now your application can access Camera",
+                    "Permission Granted, Now you can access Camera",
                     Toast.LENGTH_SHORT).show()
             }
             else{
                 Toast.makeText(this@AddActivity,
-                    "Permission Not Granted, Your application can not access Camera",
+                    "Permission Not Granted, You can not access Camera",
                     Toast.LENGTH_SHORT).show()
             }
         }

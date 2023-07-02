@@ -54,10 +54,8 @@ class AddFragment : Fragment() {
         postRecyclerView.adapter = adapter
         viewModel = ViewModelProvider(this)[MyPostViewModel::class.java]
 
-        viewModel.allPost.observe(viewLifecycleOwner, Observer {
-
+        viewModel.allPost.observe(viewLifecycleOwner) {
             adapter.updatePostList(it)
-
-        })
+        }
     }
 }

@@ -53,8 +53,12 @@ class RegistActivity : AppCompatActivity() {
         userRefs.child(currentUserID).setValue(user)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(this, "User Data Saved", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Data Saved", Toast.LENGTH_SHORT).show()
                 }
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Error Occurred ${it.localizedMessage}", Toast.LENGTH_SHORT)
+                    .show()
             }
     }
 
@@ -69,6 +73,9 @@ class RegistActivity : AppCompatActivity() {
             return
         } else if (passConfirm.text.isEmpty()) {
             Toast.makeText(this, "Please confirm your password", Toast.LENGTH_SHORT).show()
+            return
+        } else if (!passConfirm.text.equals(pass.text)) {
+            Toast.makeText(this, "Your password confirmation is not match the password", Toast.LENGTH_SHORT).show()
             return
         }
         val nameToFirebase = name.text.toString()

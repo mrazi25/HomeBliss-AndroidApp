@@ -113,7 +113,6 @@ class LoginActivity : AppCompatActivity() {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)
-
                 val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
                 auth.signInWithCredential(credential)
                     .addOnCompleteListener(this) { task ->
@@ -132,14 +131,12 @@ class LoginActivity : AppCompatActivity() {
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
                             startActivity(intent)
                         } else {
-                            // Sign in gagal
                             Toast.makeText(this, "Authentication failed.",
                                 Toast.LENGTH_SHORT).show()
                         }
                     }
             } catch (e: ApiException) {
-                // Menangani error yang terjadi saat sign in dengan Google
-                Toast.makeText(this, "Google sign in failed: ${e.message}",
+                Toast.makeText(this, "Error Occurred: ${e.message}",
                     Toast.LENGTH_SHORT).show()
             }
         }
@@ -173,8 +170,9 @@ class LoginActivity : AppCompatActivity() {
                 println(userList)
             }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Penanganan kesalahan jika ada
+            override fun onCancelled(it: DatabaseError) {
+                Toast.makeText(this@LoginActivity, "Error Occurred ${it.message}", Toast.LENGTH_SHORT)
+                    .show()
             }
         })
     }

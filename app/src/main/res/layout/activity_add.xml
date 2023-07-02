@@ -69,7 +69,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"
-            android:fontFamily="@font/source_sans_pro_light_italic"
+            android:fontFamily="@font/source_sans_pro"
             android:hint="Fill the title for your post"
             >
 
@@ -82,7 +82,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"
-            android:fontFamily="@font/source_sans_pro_light_italic"
+            android:fontFamily="@font/source_sans_pro"
             android:hint="Fill the caption for your post"
             >
 

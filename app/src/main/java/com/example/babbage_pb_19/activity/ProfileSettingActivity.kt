@@ -96,10 +96,19 @@ class ProfileSettingActivity : AppCompatActivity() {
                                     )
                                 }
                                 .addOnFailureListener {
-                                    Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this, "Error Occurred ${it.localizedMessage}", Toast.LENGTH_SHORT)
+                                        .show()
                                 }
                         }
+                        .addOnFailureListener {
+                            Toast.makeText(this, "Error Occurred ${it.localizedMessage}", Toast.LENGTH_SHORT)
+                                .show()
+                        }
 
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Error Occurred ${it.localizedMessage}", Toast.LENGTH_SHORT)
+                        .show()
                 }
         }
 
@@ -110,6 +119,10 @@ class ProfileSettingActivity : AppCompatActivity() {
                         Toast.makeText(this, "Your Account Have Been Deactivate", Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this@ProfileSettingActivity, LoginActivity::class.java))
                     }
+                }
+                ?.addOnFailureListener {
+                    Toast.makeText(this, "Error Occurred ${it.localizedMessage}", Toast.LENGTH_SHORT)
+                        .show()
                 }
         }
     }
@@ -122,7 +135,6 @@ class ProfileSettingActivity : AppCompatActivity() {
         val pictureCIV = findViewById<CircleImageView>(R.id.profile_image)
 
         if (user != null) {
-            // User is signed in
             userRef.child(user.uid).get().addOnSuccessListener {
                 if (it.exists()) {
                     nameTextView.setText(it.child("name").value.toString())
@@ -136,7 +148,8 @@ class ProfileSettingActivity : AppCompatActivity() {
                 }
             }
         } else {
-            // No user is signed in
+            Toast.makeText(this, "Error Occurred", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 

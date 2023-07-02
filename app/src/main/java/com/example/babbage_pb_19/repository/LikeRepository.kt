@@ -5,7 +5,6 @@ import com.google.firebase.database.*
 
 class LikeRepository {
     private val dbLikesReference: DatabaseReference = FirebaseDatabase.getInstance().getReference("Likes")
-
     @Volatile private var instance : LikeRepository ?= null
 
     fun getInstance() : LikeRepository {
@@ -23,8 +22,11 @@ class LikeRepository {
                     var sortedMap: MutableMap<String, Long> = mutableMapOf()
                     if (snapshot.exists()) {
                         for (likeSnapshot in snapshot.child(user_id).children) {
-                            likeMap[likeSnapshot.key.toString()] = likeSnapshot.value as Long
-                            println(likesList)
+                            val key = likeSnapshot.key.toString()
+                            val value = likeSnapshot.value
+                            if (value is Long) {
+                                likeMap[key] = value
+                            }
                         }
                         var sortedList = likeMap.toList().sortedByDescending { (_, value) -> value }
                         sortedMap = sortedList.toMap().toMutableMap()
@@ -35,9 +37,8 @@ class LikeRepository {
                     e.printStackTrace()
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
-
+                error.message
             }
         })
     }

@@ -94,6 +94,8 @@ class DiscussionActivity : AppCompatActivity() {
                         }
                         .addOnFailureListener {
                             it.printStackTrace()
+                            Toast.makeText(this, "Error Occurred ${it.localizedMessage}", Toast.LENGTH_SHORT)
+                                .show()
                         }
                 }
             }

@@ -8,7 +8,6 @@ import com.google.firebase.database.*
 class MyPostRepository {
     private val dbPostReference : DatabaseReference = FirebaseDatabase.getInstance().getReference("Post")
     private val firebaseUser = FirebaseAuth.getInstance().currentUser
-
     @Volatile private var instance : MyPostRepository ?= null
 
     fun getInstance() : MyPostRepository{
@@ -17,8 +16,6 @@ class MyPostRepository {
             this.instance = instance
             instance
         }
-
-
     }
     fun loadMyPosts(postList : MutableLiveData<List<Post>>){
         dbPostReference.addValueEventListener(object : ValueEventListener {
@@ -43,8 +40,6 @@ class MyPostRepository {
             override fun onCancelled(error: DatabaseError) {
                 error.message
             }
-
-
         })
     }
 }
