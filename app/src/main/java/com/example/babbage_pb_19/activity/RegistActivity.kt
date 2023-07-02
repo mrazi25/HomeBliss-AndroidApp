@@ -74,7 +74,7 @@ class RegistActivity : AppCompatActivity() {
         } else if (passConfirm.text.isEmpty()) {
             Toast.makeText(this, "Please confirm your password", Toast.LENGTH_SHORT).show()
             return
-        } else if (!passConfirm.text.equals(pass.text)) {
+        } else if (!passConfirm.text.toString().equals(pass.text.toString())) {
             Toast.makeText(this, "Your password confirmation is not match the password", Toast.LENGTH_SHORT).show()
             return
         }
