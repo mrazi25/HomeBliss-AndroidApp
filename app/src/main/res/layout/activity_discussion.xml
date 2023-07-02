@@ -70,6 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="Add a comment"
+            android:textColor="@color/almost_black"
             android:maxLines="5"
             android:fontFamily="@font/source_sans_pro"
             android:inputType="textMultiLine" />
