@@ -1,4 +1,4 @@
-package com.example.babbage_pb_19.activity
+package com.example.babbage_pb_19.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.babbage_pb_19.R
 import com.example.babbage_pb_19.R.id as ID
 import com.example.babbage_pb_19.R.layout as LAYOUT
-import com.example.babbage_pb_19.data.User
+import com.example.babbage_pb_19.datas.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions

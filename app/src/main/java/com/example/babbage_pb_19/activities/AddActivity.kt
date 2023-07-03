@@ -1,10 +1,9 @@
-package com.example.babbage_pb_19.activity
+package com.example.babbage_pb_19.activities
 
 import android.Manifest
 import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.Typeface
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

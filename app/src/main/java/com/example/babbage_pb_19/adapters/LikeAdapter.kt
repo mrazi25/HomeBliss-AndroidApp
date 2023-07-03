@@ -1,4 +1,4 @@
-package com.example.babbage_pb_19.adapter
+package com.example.babbage_pb_19.adapters
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.babbage_pb_19.R.id as ID
 import com.example.babbage_pb_19.R.layout as LAYOUT
 import com.example.babbage_pb_19.R.drawable as DRAWABLE
-import com.example.babbage_pb_19.activity.DiscussionActivity
-import com.example.babbage_pb_19.data.Post
+import com.example.babbage_pb_19.activities.DiscussionActivity
+import com.example.babbage_pb_19.datas.Post
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.squareup.picasso.Picasso

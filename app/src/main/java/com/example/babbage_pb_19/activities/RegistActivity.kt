@@ -1,4 +1,4 @@
-package com.example.babbage_pb_19.activity
+package com.example.babbage_pb_19.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,7 +7,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.babbage_pb_19.R
-import com.example.babbage_pb_19.data.User
+import com.example.babbage_pb_19.datas.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference

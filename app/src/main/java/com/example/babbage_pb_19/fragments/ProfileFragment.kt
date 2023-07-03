@@ -9,8 +9,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.babbage_pb_19.R
 import com.example.babbage_pb_19.R.drawable as DRAWABLE
-import com.example.babbage_pb_19.activity.LoginActivity
-import com.example.babbage_pb_19.activity.ProfileSettingActivity
+import com.example.babbage_pb_19.activities.LoginActivity
+import com.example.babbage_pb_19.activities.ProfileSettingActivity
 import com.example.babbage_pb_19.databinding.FragmentProfileBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions

@@ -6,19 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.babbage_pb_19.R
-import com.example.babbage_pb_19.activity.AddActivity
-import com.example.babbage_pb_19.adapter.PostAdapter
-import com.example.babbage_pb_19.data.MyPostViewModel
-import com.example.babbage_pb_19.data.PostViewModel
+import com.example.babbage_pb_19.activities.AddActivity
+import com.example.babbage_pb_19.adapters.PostAdapter
+import com.example.babbage_pb_19.viewmodels.MyPostViewModel
 import com.example.babbage_pb_19.databinding.FragmentAddBinding
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 
 class AddFragment : Fragment() {
 

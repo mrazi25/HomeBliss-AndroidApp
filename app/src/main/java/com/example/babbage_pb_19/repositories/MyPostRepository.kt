@@ -1,7 +1,7 @@
-package com.example.babbage_pb_19.repository
+package com.example.babbage_pb_19.repositories
 
 import androidx.lifecycle.MutableLiveData
-import com.example.babbage_pb_19.data.Post
+import com.example.babbage_pb_19.datas.Post
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 

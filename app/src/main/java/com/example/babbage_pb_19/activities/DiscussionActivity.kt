@@ -1,4 +1,4 @@
-package com.example.babbage_pb_19.activity
+package com.example.babbage_pb_19.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,11 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.babbage_pb_19.R.id as ID
 import com.example.babbage_pb_19.R.layout as LAYOUT
 import com.example.babbage_pb_19.R.drawable as DRAWABLE
-import com.example.babbage_pb_19.adapter.DiscussionAdapter
-import com.example.babbage_pb_19.data.Discussion
-import com.example.babbage_pb_19.data.DiscussionViewModel
-import com.example.babbage_pb_19.data.Post
-import com.example.babbage_pb_19.fragments.HomeFragment
+import com.example.babbage_pb_19.adapters.DiscussionAdapter
+import com.example.babbage_pb_19.datas.Discussion
+import com.example.babbage_pb_19.viewmodels.DiscussionViewModel
+import com.example.babbage_pb_19.datas.Post
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.squareup.picasso.Picasso

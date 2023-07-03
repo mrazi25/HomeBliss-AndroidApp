@@ -1,10 +1,4 @@
-package com.example.babbage_pb_19.data
-
-import android.net.wifi.WifiManager.SubsystemRestartTrackingCallback
-import android.os.Parcelable
-import com.google.firebase.database.Exclude
-import com.google.firebase.database.ServerValue
-import java.util.*
+package com.example.babbage_pb_19.datas
 
 data class Post(val caption: String?= "",
                 val judul: String?= "",

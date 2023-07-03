@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.babbage_pb_19.R.id as ID
-import com.example.babbage_pb_19.adapter.PostAdapter
-import com.example.babbage_pb_19.data.PostViewModel
+import com.example.babbage_pb_19.adapters.PostAdapter
+import com.example.babbage_pb_19.viewmodels.PostViewModel
 import com.example.babbage_pb_19.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {

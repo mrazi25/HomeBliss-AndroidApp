@@ -1,4 +1,4 @@
-package com.example.babbage_pb_19.adapter
+package com.example.babbage_pb_19.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.babbage_pb_19.R.id as ID
 import com.example.babbage_pb_19.R.layout as LAYOUT
 import com.example.babbage_pb_19.R.drawable as DRAWABLE
-import com.example.babbage_pb_19.data.Discussion
+import com.example.babbage_pb_19.datas.Discussion
 import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView

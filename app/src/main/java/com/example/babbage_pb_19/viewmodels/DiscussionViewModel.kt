@@ -1,10 +1,10 @@
-package com.example.babbage_pb_19.data
+package com.example.babbage_pb_19.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.babbage_pb_19.repository.DiscussionRepository
-import com.example.babbage_pb_19.repository.PostRepository
+import com.example.babbage_pb_19.datas.Discussion
+import com.example.babbage_pb_19.repositories.DiscussionRepository
 
 class DiscussionViewModel : ViewModel() {
     private val repository : DiscussionRepository = DiscussionRepository().getInstance()

@@ -1,4 +1,4 @@
-package com.example.babbage_pb_19.activity
+package com.example.babbage_pb_19.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

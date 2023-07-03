@@ -9,9 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.babbage_pb_19.R.id as ID
-import com.example.babbage_pb_19.adapter.LikeAdapter
-import com.example.babbage_pb_19.data.LikeViewModel
-import com.example.babbage_pb_19.data.PostViewModel
+import com.example.babbage_pb_19.adapters.LikeAdapter
+import com.example.babbage_pb_19.viewmodels.LikeViewModel
+import com.example.babbage_pb_19.viewmodels.PostViewModel
 import com.example.babbage_pb_19.databinding.FragmentFavoriteBinding
 import com.google.firebase.auth.FirebaseAuth
 

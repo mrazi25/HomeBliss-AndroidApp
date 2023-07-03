@@ -1,13 +1,11 @@
-package com.example.babbage_pb_19.activity
+package com.example.babbage_pb_19.activities
 
 import android.net.Uri
 import android.os.Bundle
 import android.Manifest
-import android.app.Activity
 import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.os.PersistableBundle
 import android.provider.MediaStore
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -22,8 +20,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
-import java.io.*
-import java.util.*
 
 class ProfileSettingActivity : AppCompatActivity() {
 
